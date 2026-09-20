@@ -305,15 +305,7 @@ body {
 .content {
     margin-top: auto;
     margin-bottom: auto;
-    width: min(960px, 82vw);
-
-    margin-left: auto;
-    margin-right: auto;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    width: min(1120px, 90vw);
 }
 
 .eyebrow {
@@ -325,19 +317,23 @@ body {
 
 h1 {
     font-weight: 300;
-    font-size: clamp(56px, 8vw, 132px);
-    line-height: 0.98;
+    /* sized so the longest word ("Interdisciplinary") always fits the row */
+    font-size: clamp(40px, 6.6vw, 104px);
+    line-height: 1;
     letter-spacing: -0.02em;
-    text-align: center;
+    margin-left: -4px;
 }
 
 h1 .line {
     display: block;
-    overflow: hidden;
+    /* no clipping — the whole word (incl. the final letter) always shows */
+    overflow: visible;
+    padding-right: 0.12em;
 }
 
 h1 .line > span {
-    display: block;
+    display: inline-block;
+    white-space: nowrap;
 }
 
 h1 .line > span em {
@@ -345,22 +341,24 @@ h1 .line > span em {
     color: var(--black);
 }
 
-/* title rows rise from their mask — self-contained so the words
-   always appear on their own, independent of any JS timing */
+/* title rows fade + rise in — visible by default so the words
+   can never get stuck hidden; the animation only reveals them */
 h1 .line > span {
-    transform: translateY(110%);
-    animation: riseUp 1s cubic-bezier(.19,1,.22,1) forwards;
+    opacity: 1;
+    transform: translateY(0);
+    animation: riseUp 1s cubic-bezier(.19,1,.22,1) both;
 }
 
 h1 .line:nth-child(1) > span { animation-delay: 2.75s; }
 h1 .line:nth-child(2) > span { animation-delay: 2.9s; }
 
 @media (prefers-reduced-motion: reduce) {
-    h1 .line > span { transform: translateY(0); animation: none; }
+    h1 .line > span { animation: none; }
 }
 
 @keyframes riseUp {
-    to { transform: translateY(0); }
+    from { opacity: 0; transform: translateY(35%); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 .description {
@@ -524,9 +522,11 @@ h1 .line:nth-child(2) > span { animation-delay: 2.9s; }
     .eyebrow { font-size: 9px; letter-spacing: 0.28em; margin-bottom: 22px; }
 
     h1 {
-        font-size: clamp(46px, 15vw, 82px);
-        line-height: 1;
-        letter-spacing: -0.015em;
+        /* 6.4vw keeps the 17-letter word inside the screen padding */
+        font-size: clamp(26px, 6.4vw, 46px);
+        line-height: 1.04;
+        letter-spacing: -0.01em;
+        margin-left: -1px;
     }
 
     .description {
@@ -536,41 +536,18 @@ h1 .line:nth-child(2) > span { animation-delay: 2.9s; }
         line-height: 1.7;
     }
 
-    /* footer stacks and centers to match the hero */
+    /* footer stays left-aligned, two columns */
     .footer {
-        grid-template-columns: 1fr;
-        justify-items: center;
-        gap: 20px;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
         padding-top: 22px;
-        text-align: center;
     }
 
-    .footer-left {
-        align-items: center;
-        gap: 6px;
-    }
+    .footer-center { display: none; }
 
     .footer-left a {
-        align-self: center;
-        font-size: 12px;
+        font-size: 11px;
         word-break: break-word;
-    }
-
-    .footer-center {
-        display: flex;
-        order: -1;      /* rule sits at the top of the stack */
-    }
-
-    .footer-right {
-        flex-direction: row;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .footer-right span:first-child::after {
-        content: "·";
-        margin-left: 8px;
-        color: var(--grey);
     }
 
 }
@@ -583,11 +560,11 @@ h1 .line:nth-child(2) > span { animation-delay: 2.9s; }
 
     .brand-name { font-size: 9px; letter-spacing: 0.12em; }
 
-    h1 { font-size: clamp(40px, 14vw, 64px); }
+    h1 { font-size: clamp(22px, 6.2vw, 34px); }
 
     .description { font-size: 12.5px; max-width: 280px; }
 
-    .footer-left a { font-size: 11px; }
+    .footer-left a { font-size: 10px; }
 
 }
 
